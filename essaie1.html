@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation de Travail - La Régale</title>
+    <style>
+        /* Importation des polices Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap');
+
+        /* Variables de couleurs */
+        :root {
+            --rose-signature: #E59696;
+            --blanc-pur: #FFFFFF;
+            --texte-sombre: #2C3E50;
+            --texte-clair: #596275;
+        }
+
+        /* Configuration de la page A4 */
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 10px 0;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--texte-sombre);
+        }
+
+        .a4-page {
+            background-color: var(--blanc-pur);
+            width: 210mm;
+            min-height: 297mm;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+            padding: 20mm;
+            overflow: hidden;
+            /* Bande graphique discrète en haut et en bas */
+            border-top: 8px solid var(--rose-signature);
+            border-bottom: 8px solid var(--rose-signature);
+        }
+
+        /* Filigrane (Watermark) */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Contenu principal (au-dessus du filigrane) */
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* En-tête (Header) */
+        .header {
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .header img.logo {
+            width: 120px;
+            margin-bottom: 15px;
+        }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin: 0 0 5px 0;
+            color: var(--texte-sombre);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            margin: 2px 0;
+            font-size: 11px;
+            color: var(--texte-clair);
+            letter-spacing: 1px;
+        }
+
+        /* Titre du document */
+        .document-title {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .document-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--texte-sombre);
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .title-separator {
+            width: 160px;
+            height: 2px;
+            background-color: var(--rose-signature);
+            margin:5px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Corps du texte */
+        .body-text {
+            font-size: 13pt;
+            line-height: 2;
+            text-align: justify;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .body-text strong {
+            font-weight: 600;
+            color: var(--texte-sombre);
+        }
+
+        /* Zone de signature */
+        .signature-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0px;
+        }
+
+        .signature-box {
+            text-align: right;
+            width: 300px;
+        }
+
+        .signature-box p {
+            margin: 5px 0;
+            font-size: 12pt;
+        }
+
+        .signature-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-top:15px !important;
+        }
+
+        .signature-space {
+            height: 80px;
+            margin-top: 10px;
+            border-bottom: 1px dashed var(--texte-clair);
+            position: relative;
+        }
+
+        .signature-space::after {
+            content: "(Signature et Cachet)";
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            font-size: 10px;
+            color: var(--texte-clair);
+            font-style: italic;
+        }
+
+        /* Règle d'impression pour un PDF parfait */
+        @media print {
+            body { background-color: var(--blanc-pur); padding: 0; }
+            .a4-page { box-shadow: none; border-top: 8px solid var(--rose-signature) !important; border-bottom: 8px solid var(--rose-signature) !important; }
+            /* Forcer l'impression des couleurs et du filigrane */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="a4-page">
+        <img src="images/logo_laregale.jpeg" alt="Filigrane La Régale" class="watermark">
+
+        <div class="content">
+            <div class="header">
+                <img src="images/logo.png" alt="Logo La Régale" class="logo">
+                <h2>Restaurant La Régale</h2>
+                <p>LOMÉ-DJIDJOLÉ, LOMÉ</p>
+                <p>+228 92 46 92 16 &nbsp;|&nbsp; laregale228@gmail.com</p>
+            </div>
+
+            <div class="document-title">
+                <h1>ATTESTATION DE TRAVAIL</h1>
+                <div class="title-separator"></div>
+            </div>
+
+            <div class="body-text">
+                Je soussigné(e), Mme <strong>BAITE Afi Justine</strong>, agissant en qualité de <strong>Directrice Générale</strong> de l'établissement gastronomique <strong>La Régale</strong>, certifie par la présente que :
+                <br>
+                <strong>M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
+                <br>
+                a été employé au sein de notre restaurant en qualité de <strong>Responsable informatique</strong>.
+                <br>
+                Il a exercé ses fonctions du <strong>1er Aout 2023</strong> au <strong>31 Janvier 2025</strong>.
+                <br>
+                <p>
+                    Au cours de cette période, l’intéressé a accompli ses missions avec sérieux, professionnalisme et un réel sens du service. Dans le cadre de ses fonctions, il avait notamment pour responsabilités :<br>
+
+                    • <strong>Creation est maintenance du site web du restairant</strong><br>
+                    • <strong>maintenance du systeme informatique et appareils</strong><br>
+                    • <strong>Digitalisation du systeme de gestion des employes, des commandes et des clients</strong><br>
+
+                    Durant toute la durée de sa collaboration avec notre établissement, <strong>M. Nomeumeu</strong> a fait preuve de ponctualité, de rigueur et d’un bon esprit d’équipe.
+                </p>
+                
+                La présente attestation est délivrée à l'intéressé sur sa demande, pour servir et valoir ce que de droit.
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-box">
+                    <p>Fait à Lomé, le <strong>11/03/2025</strong></p>
+                    <p class="signature-title">La Directrice Générale</p>
+                    <strong class="signature-title">BAITE A. Justine</strong>
+                    <div class="signature-space"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html> 
+
+

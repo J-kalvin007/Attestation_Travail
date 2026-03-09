@@ -1,0 +1,315 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation de Travail - La Régale</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --rose-signature: #E59696;
+            --texte-sombre: #2C3E50;
+            --texte-clair: #596275;
+            --ligne-fine: #D1D8E0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            background-color: #F0F2F5;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--texte-sombre);
+        }
+
+        /* A4 Page Setup */
+        .a4-page {
+            background-color: #FFFFFF;
+            width: 210mm;
+            height: 297mm;
+            margin: 20px auto;
+            padding: 12mm 20mm;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Decorative border */
+        .a4-page::before {
+            content: "";
+            width: 100%;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background-color: var(--rose-signature);
+        }
+
+        /* Decorative border */
+        .a4-page::after {
+            content: "";
+            width: 100%;
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 6px;
+            background-color: var(--rose-signature);
+        }
+
+        /* Filigrane (Watermark) */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            opacity: 0.09;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+
+        /* Header Layout */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            /* border-bottom: 1px solid var(--ligne-fine); */
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+        }
+
+        .header-left img {
+            height: 90px;
+            width: auto;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-right h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18pt;
+            margin: 0 0 5px 0;
+            color: var(--texte-sombre);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-right p {
+            margin: 2px 0;
+            font-size: 9pt;
+            color: var(--texte-clair);
+            line-height: 1.4;
+        }
+
+        /* Document Title */
+        .document-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .document-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26pt;
+            margin: 0;
+            letter-spacing: 4px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .document-title h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background-color: var(--rose-signature);
+        }
+
+        /* Body Content */
+        .content {
+            flex-grow: 1;
+            font-size: 11.5pt;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .recipient-name {
+            display: block;
+            text-align: center;
+            font-size: 18pt;
+            margin: 20px 0;
+            /* text-transform: uppercase; */
+            font-style: poppins;
+            letter-spacing: 1px;
+        }
+
+        .responsibilities-list {
+            margin: 20px 0 20px 20px;
+            list-style-type: none;
+        }
+
+        .responsibilities-list li {
+            position: relative;
+            margin-bottom: 8px;
+            padding-left: 15px;
+        }
+
+        .responsibilities-list li::before {
+            content: "•";
+            color: var(--rose-signature);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Footer / Signature */
+        .footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+            /* border-top: 1px solid var(--ligne-fine); */
+            padding-top: 10px;
+        }
+
+        .signature-block {
+            width: 280px;
+            text-align: right;
+        }
+
+        .date-place {
+            margin-bottom: 15px;
+            /* font-style: italic; */
+        }
+
+        .signature-title {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .signature-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 12pt;
+            color: var(--texte-sombre);
+            margin-top: 5px;
+            display: block;
+        }
+
+        .stamp-area {
+            height: 100px;
+            margin-top: 25px;
+            border: 1px dashed var(--ligne-fine);
+            display: flex;
+            visibility: hidden;
+            align-items: center;
+            justify-content: center;
+            font-size: 8pt;
+            color: var(--texte-clair);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Print Optimization */
+        @media print {
+            body { background: none; }
+            .a4-page { 
+                margin: 0; 
+                box-shadow: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="a4-page">
+
+        <img src="images/logo_laregale.jpeg" alt="Filigrane La Régale" class="watermark">
+
+        <header class="header">
+
+            <div class="header-left">
+                <img src="images/logo.png" alt="La Régale Logo">
+            </div>
+            <div class="header-right">
+                <h2>Restaurant La Régale</h2>
+                <p>Djidjolé / Lomé, Togo</p>
+                <p>+228 92 46 92 16</p>
+                <p>NIF: 1001534263</p>
+                <p>Numero CNSS: 90621</p>
+                <p>BP: 30708</p>
+                <p>laregale228@gmail.com</p>
+            </div>
+
+        </header>
+
+        <section class="document-title">
+            <h1>ATTESTATION DE TRAVAIL</h1>
+        </section>
+
+        <main class="content">
+            
+            <p>
+                Je soussignée, <strong>Mme BAITE Afi Justine</strong>, agissant en qualité de <strong>Directrice Générale</strong> de l'établissement gastronomique <strong>La Régale</strong>, certifie par la présente que :
+            </p>
+
+            <strong class="recipient-name">M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
+           
+            <p>
+                A été employé au sein de notre établissement en qualité de <strong>Responsable Informatique</strong>. Il a exercé ses fonctions du <strong>1er août 2023</strong> au <strong>31 janvier 2025</strong>.
+            </p>
+
+            <p>
+                Au cours de cette période, l’intéressé a accompli ses missions avec un professionnalisme exemplaire et un sens aigu des responsabilités. Ses fonctions incluaient notamment :
+            </p>
+
+            <ul class="responsibilities-list">
+                <li><strong>Création et maintenance</strong> du site web du restaurant</li>
+                <li><strong>Maintenance curative et préventive</strong> du système informatique et des équipements</li>
+                <li><strong>Digitalisation</strong> du système de gestion des employés, des commandes et de la clientèle</li>
+            </ul>
+
+            <p>
+                Durant toute la durée de notre collaboration, <strong>M. NOMEUMEU</strong> a fait preuve de rigueur, de ponctualité et d’un excellent esprit d’équipe, apportant une valeur ajoutée significative à notre structure.
+            </p>
+            
+            <p>
+                La présente attestation est délivrée à l'intéressé pour servir et valoir ce que de droit.
+            </p>
+        </main>
+
+        <footer class="footer">
+            <div class="signature-block">
+                <p class="date-place">Fait à Lomé, le <strong>11/03/2025</strong></p>
+                <p class="signature-title">La Directrice Générale</p>
+                <span class="signature-name">BAITE A. Justine</span>
+                <div class="stamp-area">
+                    Emplacement Cachet & Signature
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
