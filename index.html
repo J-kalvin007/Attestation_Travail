@@ -4,19 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attestation de Travail - La Régale</title>
+    <title>Attestation de Travail — La Régale</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
+        /* ════════════════════════════════════════
+           DESIGN TOKENS
+        ════════════════════════════════════════ */
         :root {
-            --rose-signature: #E59696;
-            --rose-light: #f5dcdc;
-            --rose-deep: #c97070;
-            --texte-sombre: #1A2535;
-            --texte-medium: #3a4a5c;
-            --texte-clair: #6b7a8d;
-            --ligne-fine: #dde3ec;
-            --background-soft: #fafbfd;
+            --rose: #E59696;
+            --rose-deep: #C97070;
+            --rose-pale: #F7E8E8;
+            --rose-muted: #f0d5d5;
+            --ink: #18243A;
+            --ink-medium: #344357;
+            --ink-light: #5D6E85;
+            --ink-ghost: #9AAABB;
+            --divider: #DDE4EE;
+            --surface-alt: #F8F9FC;
+            --white: #FFFFFF;
         }
 
         * {
@@ -26,459 +32,594 @@
         }
 
         body {
-            background: linear-gradient(135deg, #eef0f4 0%, #e8eaef 100%);
+            background: #E4E8F0;
             margin: 0;
-            padding: 30px 0 40px;
+            padding: 36px 0 48px;
             font-family: 'Montserrat', sans-serif;
-            color: var(--texte-sombre);
+            color: var(--ink);
         }
 
-        /* ─── A4 Page ─── */
-        .a4-page {
-            background-color: #FFFFFF;
+        /* ════════════════════════════════════════
+           PAGE A4
+        ════════════════════════════════════════ */
+        .page {
+            background: var(--white);
             width: 210mm;
             min-height: 297mm;
             margin: 0 auto;
-            padding: 0;
             position: relative;
             display: flex;
             flex-direction: column;
             box-shadow:
-                0 4px 6px rgba(0, 0, 0, 0.04),
-                0 12px 40px rgba(0, 0, 0, 0.10),
-                0 1px 3px rgba(0, 0, 0, 0.06);
+                0 2px 4px rgba(0, 0, 0, 0.06),
+                0 8px 24px rgba(0, 0, 0, 0.10),
+                0 20px 56px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
 
-        /* ─── Bande de couleur supérieure (triple) ─── */
-        .top-band {
-            width: 100%;
+        /* ── Barre latérale gauche ── */
+        .page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(to bottom,
+                    var(--rose) 0%,
+                    var(--rose-deep) 50%,
+                    var(--rose) 100%);
+            z-index: 5;
+        }
+
+        /* ════════════════════════════════════════
+           BANDEAUX CHROMATIQUES
+        ════════════════════════════════════════ */
+        .stripe-top,
+        .stripe-bottom {
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
-        }
-
-        .band-primary {
-            height: 7px;
-            background-color: var(--rose-signature);
-        }
-
-        .band-secondary {
-            height: 2px;
-            background-color: var(--rose-deep);
-        }
-
-        .band-accent {
-            height: 1px;
-            background-color: var(--rose-light);
-        }
-
-        /* ─── Bande de couleur inférieure (triple) ─── */
-        .bottom-band {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
         }
 
-        .band-accent-b {
-            height: 1px;
-            background-color: var(--rose-light);
+        .s1 {
+            height: 5px;
+            background: var(--rose);
         }
 
-        .band-secondary-b {
-            height: 2px;
-            background-color: var(--rose-deep);
+        .s2 {
+            height: 1.5px;
+            background: var(--rose-deep);
         }
 
-        .band-primary-b {
-            height: 7px;
-            background-color: var(--rose-signature);
+        .s3 {
+            height: 0.8px;
+            background: var(--rose-muted);
         }
 
-        /* ─── Zone intérieure du document ─── */
-        .inner-wrap {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 14mm 22mm 12mm;
-        }
-
-        /* ─── Filigrane ─── */
+        /* ════════════════════════════════════════
+           FILIGRANE
+        ════════════════════════════════════════ */
         .watermark {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(-8deg);
-            width: 55%;
-            opacity: 0.055;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            width: 52%;
+            opacity: 0.05;
             z-index: 0;
             pointer-events: none;
-            user-select: none;
         }
 
-        /* ─── Header ─── */
-        .header {
+        /* ════════════════════════════════════════
+           ZONE INTÉRIEURE (contenu)
+        ════════════════════════════════════════ */
+        .body-wrap {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 16px;
-            margin-bottom: 10px;
-            border-bottom: 1.5px solid var(--ligne-fine);
+            flex-direction: column;
+            padding: 12mm 24mm 10mm 26mm;
+            /* +1mm gauche pour compenser la barre */
             position: relative;
             z-index: 1;
         }
 
-        .header-left {
-            display: flex;
+        /* ════════════════════════════════════════
+           EN-TÊTE INSTITUTIONNEL
+        ════════════════════════════════════════ */
+        .header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
+            gap: 0 22px;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--divider);
         }
 
-        .header-left img {
-            height: 82px;
+        /* Logo */
+        .header-logo img {
+            height: 76px;
             width: auto;
+            display: block;
             object-fit: contain;
         }
 
-        .header-divider {
+        /* Séparateur vertical */
+        .header-sep {
             width: 1px;
-            height: 64px;
-            background: linear-gradient(to bottom, transparent, var(--rose-signature), transparent);
-            margin: 0 18px;
+            align-self: stretch;
+            margin: 4px 0;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    var(--rose) 30%,
+                    var(--rose) 70%,
+                    transparent 100%);
         }
 
-        .header-tagline {
-            font-size: 8pt;
-            color: var(--texte-clair);
+        /* Infos entreprise */
+        .header-company {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .company-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18.5pt;
+            font-weight: 700;
+            color: var(--ink);
             letter-spacing: 2px;
             text-transform: uppercase;
+            line-height: 1.05;
+            margin: 0 0 4px;
+        }
+
+        .company-tagline {
+            font-size: 7pt;
             font-weight: 500;
-        }
-
-        .header-right {
-            text-align: right;
-        }
-
-        .header-right .company-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 19pt;
-            font-weight: 700;
-            margin: 0 0 6px 0;
-            color: var(--texte-sombre);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            line-height: 1;
-        }
-
-        .header-right .company-info {
-            display: grid;
-            grid-template-columns: auto auto;
-            gap: 1px 14px;
-            justify-content: end;
-            margin-top: 4px;
-        }
-
-        .company-info p {
-            margin: 0;
-            font-size: 7.5pt;
-            color: var(--texte-clair);
-            line-height: 1.55;
-            text-align: right;
-        }
-
-        .company-info p strong {
-            color: var(--texte-medium);
-            font-weight: 600;
-        }
-
-        .ref-badge {
-            display: inline-block;
-            margin-top: 7px;
-            background: var(--background-soft);
-            border: 1px solid var(--ligne-fine);
-            border-left: 2.5px solid var(--rose-signature);
-            border-radius: 3px;
-            padding: 2px 8px;
-            font-size: 7pt;
-            color: var(--texte-clair);
-            letter-spacing: 0.8px;
-        }
-
-        /* ─── Titre du document ─── */
-        .document-title {
-            text-align: center;
-            margin: 20px 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .title-inner {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .title-label {
-            font-size: 7pt;
-            letter-spacing: 5px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--rose-deep);
-            font-weight: 600;
-            margin-bottom: 6px;
+            margin: 0 0 8px;
         }
 
-        .document-title h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28pt;
+        .company-coords {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 14px;
+            row-gap: 1px;
+        }
+
+        .company-coords span {
+            font-size: 7.2pt;
+            color: var(--ink-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .company-coords .coord-label {
+            font-weight: 600;
+            color: var(--ink-medium);
+        }
+
+        /* Bloc référence document */
+        .header-ref {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .ref-num {
+            font-size: 7pt;
+            font-weight: 600;
+            color: var(--ink-medium);
+            letter-spacing: 0.8px;
+            background: var(--surface-alt);
+            border: 1px solid var(--divider);
+            border-left: 2.5px solid var(--rose);
+            border-radius: 2px;
+            padding: 3px 9px;
+            white-space: nowrap;
+        }
+
+        .ref-date {
+            font-size: 6.8pt;
+            color: var(--ink-ghost);
+            letter-spacing: 0.4px;
+        }
+
+        .ref-official {
+            font-size: 5.8pt;
             font-weight: 700;
-            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--rose-deep);
+            border: 1px solid var(--rose-muted);
+            background: var(--rose-pale);
+            padding: 2px 7px;
+            border-radius: 2px;
+        }
+
+        /* ════════════════════════════════════════
+           TITRE DU DOCUMENT
+        ════════════════════════════════════════ */
+        .doc-title {
+            text-align: center;
+            margin: 18px 0 22px;
+        }
+
+        .doc-title-eyebrow {
+            display: block;
+            font-size: 6.5pt;
+            font-weight: 600;
             letter-spacing: 5px;
-            color: var(--texte-sombre);
+            text-transform: uppercase;
+            color: var(--ink-ghost);
+            margin-bottom: 8px;
+        }
+
+        .doc-title h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 27pt;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: var(--ink);
+            margin: 0;
             line-height: 1;
         }
 
+        /* Ornement sous le titre */
         .title-ornament {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            width: 100%;
+            justify-content: center;
+            gap: 0;
+            margin-top: 11px;
         }
 
-        .ornament-line {
-            flex: 1;
+        .orn-line {
             height: 1px;
-            background: linear-gradient(to right, transparent, var(--rose-signature));
+            width: 60px;
+            background: linear-gradient(to right, transparent, var(--rose));
         }
 
-        .ornament-line.right {
-            background: linear-gradient(to left, transparent, var(--rose-signature));
+        .orn-line.r {
+            background: linear-gradient(to left, transparent, var(--rose));
         }
 
-        .ornament-diamond {
-            width: 6px;
-            height: 6px;
-            background-color: var(--rose-signature);
+        .orn-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--rose);
             transform: rotate(45deg);
+            margin: 0 8px;
             flex-shrink: 0;
         }
 
-        /* ─── Contenu principal ─── */
+        .orn-line-sm {
+            height: 0.6px;
+            width: 28px;
+            background: var(--rose-muted);
+        }
+
+        .orn-line-sm.r {
+            /* mirror */
+        }
+
+        /* ════════════════════════════════════════
+           CORPS DU DOCUMENT
+        ════════════════════════════════════════ */
         .content {
             flex-grow: 1;
-            font-size: 10.5pt;
-            line-height: 1.85;
+            font-size: 10.2pt;
+            line-height: 1.9;
             text-align: justify;
-            color: var(--texte-medium);
-            position: relative;
-            z-index: 1;
+            color: var(--ink-medium);
             hyphens: auto;
         }
 
         .content p {
-            margin: 0 0 12px 0;
+            margin: 0 0 13px;
         }
 
-        /* ─── Encadré du nom du bénéficiaire ─── */
-        .recipient-block {
-            margin: 18px 0 20px;
+        .content strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        /* ── Bloc du bénéficiaire ── */
+        .beneficiary {
+            margin: 16px 0 18px;
+            padding: 13px 0;
+            border-top: 1px solid var(--divider);
+            border-bottom: 1px solid var(--divider);
             text-align: center;
             position: relative;
         }
 
-        .recipient-name {
-            display: block;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20pt;
-            font-weight: 700;
-            color: var(--texte-sombre);
-            letter-spacing: 2px;
-            padding: 14px 30px;
-            border-top: 1.5px solid var(--ligne-fine);
-            border-bottom: 1.5px solid var(--ligne-fine);
-            position: relative;
-        }
-
-        .recipient-name::before,
-        .recipient-name::after {
+        /* Coins décoratifs */
+        .beneficiary::before,
+        .beneficiary::after {
             content: "";
             position: absolute;
-            width: 8px;
-            height: 8px;
-            border: 1.5px solid var(--rose-signature);
-        }
-
-        .recipient-name::before {
-            top: -4px;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            background: white;
-        }
-
-        .recipient-corner {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-color: var(--rose-signature);
+            width: 14px;
+            height: 14px;
+            border-color: var(--rose);
             border-style: solid;
         }
 
-        .recipient-corner.tl {
-            top: 0;
-            left: 0;
+        .beneficiary::before {
+            top: -1px;
+            left: -1px;
             border-width: 2px 0 0 2px;
         }
 
-        .recipient-corner.tr {
-            top: 0;
-            right: 0;
-            border-width: 2px 2px 0 0;
-        }
-
-        .recipient-corner.bl {
-            bottom: 0;
-            left: 0;
-            border-width: 0 0 2px 2px;
-        }
-
-        .recipient-corner.br {
-            bottom: 0;
-            right: 0;
+        .beneficiary::after {
+            bottom: -1px;
+            right: -1px;
             border-width: 0 2px 2px 0;
         }
 
-        /* ─── Liste des responsabilités ─── */
-        .responsibilities-list {
-            margin: 10px 0 16px 0;
-            list-style-type: none;
-            padding: 0;
-            background: var(--background-soft);
-            border-left: 3px solid var(--rose-signature);
-            border-radius: 0 6px 6px 0;
-            padding: 10px 16px 10px 20px;
-        }
-
-        .responsibilities-list li {
+        .beneficiary-inner {
             position: relative;
-            margin-bottom: 8px;
-            padding-left: 16px;
-            font-size: 10pt;
-            color: var(--texte-medium);
-            line-height: 1.6;
         }
 
-        .responsibilities-list li:last-child {
-            margin-bottom: 0;
-        }
-
-        .responsibilities-list li::before {
-            content: "▸";
-            color: var(--rose-signature);
-            font-size: 10pt;
+        .beneficiary-inner::before,
+        .beneficiary-inner::after {
+            content: "";
             position: absolute;
-            left: 0;
-            top: 0;
+            width: 14px;
+            height: 14px;
+            border-color: var(--rose);
+            border-style: solid;
         }
 
-        .responsibilities-list li strong {
-            color: var(--texte-sombre);
-            font-weight: 600;
+        .beneficiary-inner::before {
+            top: -14px;
+            right: -1px;
+            border-width: 2px 2px 0 0;
         }
 
-        /* ─── Footer / Signature ─── */
-        .footer {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding-top: 16px;
-            border-top: 1.5px solid var(--ligne-fine);
-            position: relative;
-            z-index: 1;
+        .beneficiary-inner::after {
+            bottom: -14px;
+            left: -1px;
+            border-width: 0 0 2px 2px;
         }
 
-        .footer-left {
-            font-size: 8pt;
-            color: var(--texte-clair);
-            line-height: 1.7;
-        }
-
-        .footer-left .legal-note {
-            font-style: italic;
-            max-width: 200px;
-        }
-
-        .signature-block {
-            width: 260px;
-            text-align: center;
-        }
-
-        .date-place {
-            font-size: 9pt;
-            color: var(--texte-clair);
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .date-place strong {
-            color: var(--texte-medium);
-        }
-
-        .signature-title {
-            font-weight: 600;
-            font-size: 9pt;
-            margin: 0 0 2px 0;
+        .beneficiary-label {
+            font-size: 6.5pt;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--texte-sombre);
-        }
-
-        .signature-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 13pt;
-            font-weight: 600;
-            color: var(--texte-sombre);
+            color: var(--ink-ghost);
+            font-weight: 500;
+            margin-bottom: 4px;
             display: block;
-            margin-top: 4px;
         }
 
-        .stamp-area {
+        .beneficiary-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 19pt;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: 2px;
+            display: block;
+            line-height: 1.15;
+        }
+
+        /* ── Liste des fonctions ── */
+        .mission-block {
+            background: var(--surface-alt);
+            border-left: 3px solid var(--rose);
+            border-radius: 0 4px 4px 0;
+            padding: 10px 18px 10px 16px;
+            margin: 10px 0 16px;
+        }
+
+        .mission-block ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mission-block li {
+            position: relative;
+            padding: 4px 0 4px 20px;
+            font-size: 10pt;
+            color: var(--ink-medium);
+            line-height: 1.6;
+            border-bottom: 0.5px solid var(--divider);
+        }
+
+        .mission-block li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .mission-block li::before {
+            content: "›";
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            color: var(--rose);
+            font-size: 14pt;
+            line-height: 1;
+            font-weight: 700;
+        }
+
+        .mission-block li strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        /* ════════════════════════════════════════
+           SÉPARATEUR DE SECTION "POUR VALOIR CE QUE DE DROIT"
+        ════════════════════════════════════════ */
+        .closing-rule {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 6px 0 14px;
+        }
+
+        .closing-rule::before,
+        .closing-rule::after {
+            content: "";
+            flex: 1;
+            height: 0.5px;
+            background: var(--divider);
+        }
+
+        .closing-rule span {
+            font-size: 6pt;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ink-ghost);
+            white-space: nowrap;
+        }
+
+        /* ════════════════════════════════════════
+           PIED DE PAGE — SIGNATURE
+        ════════════════════════════════════════ */
+        .footer {
             margin-top: 14px;
-            height: 90px;
-            border: 1.5px dashed var(--ligne-fine);
-            border-radius: 6px;
+            padding-top: 14px;
+            border-top: 1px solid var(--divider);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0 30px;
+            align-items: end;
+        }
+
+        /* Mentions légales bas gauche */
+        .footer-legal {
+            font-size: 7pt;
+            color: var(--ink-ghost);
+            line-height: 1.7;
+            font-style: italic;
+            align-self: end;
+            padding-bottom: 2px;
+        }
+
+        .footer-legal strong {
+            font-style: normal;
+            color: var(--ink-light);
+        }
+
+        /* Bloc signature droite */
+        .signature-column {
+            width: 240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .sig-date {
+            font-size: 8.5pt;
+            color: var(--ink-light);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .sig-date strong {
+            color: var(--ink-medium);
+        }
+
+        .sig-title {
+            font-size: 8pt;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--ink);
+            text-align: center;
+            border-bottom: 1.5px solid var(--rose);
+            padding-bottom: 3px;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .sig-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12.5pt;
+            font-weight: 600;
+            color: var(--ink);
+            font-style: italic;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        /* Zone cachet */
+        .stamp-zone {
+            width: 100%;
+            height: 92px;
+            border: 1.5px dashed var(--divider);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: var(--surface-alt);
+        }
+
+        .stamp-zone .sz-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1.5px solid var(--divider);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6.5pt;
-            color: #bcc5d0;
+        }
+
+        .stamp-zone .sz-icon svg {
+            width: 11px;
+            height: 11px;
+            fill: none;
+            stroke: var(--ink-ghost);
+            stroke-width: 1.5;
+        }
+
+        .stamp-zone .sz-label {
+            font-size: 6pt;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            color: var(--ink-ghost);
         }
 
-        /* ─── Numérotation de page ─── */
-        .page-number {
+        /* ════════════════════════════════════════
+           NUMÉRO DE PAGE
+        ════════════════════════════════════════ */
+        .page-num {
             position: absolute;
-            bottom: 5mm;
-            right: 22mm;
-            font-size: 7pt;
-            color: #c0c8d4;
-            letter-spacing: 0.5px;
-            z-index: 1;
+            bottom: 6mm;
+            right: 24mm;
+            font-size: 6.5pt;
+            color: var(--ink-ghost);
+            letter-spacing: 1px;
+            z-index: 5;
         }
 
-        /* ─── Print ─── */
+        /* ════════════════════════════════════════
+           IMPRESSION
+        ════════════════════════════════════════ */
         @media print {
             body {
                 background: none;
                 padding: 0;
             }
 
-            .a4-page {
-                margin: 0;
-                box-shadow: none;
+            .page {
                 width: 100%;
                 min-height: 100vh;
+                box-shadow: none;
+                margin: 0;
             }
         }
     </style>
@@ -486,132 +627,168 @@
 
 <body>
 
-    <div class="a4-page">
+    <div class="page">
 
-        <!-- Watermark -->
-        <img src="images/logo_laregale.jpeg" alt="Filigrane La Régale" class="watermark">
+        <!-- Filigrane -->
+        <img src="images/logo_laregale.jpeg" alt="" class="watermark" aria-hidden="true">
 
-        <!-- Bandes décoratives supérieures -->
-        <div class="top-band">
-            <div class="band-primary"></div>
-            <div class="band-secondary"></div>
-            <div class="band-accent"></div>
+        <!-- Bande chromatique supérieure -->
+        <div class="stripe-top">
+            <div class="s1"></div>
+            <div class="s2"></div>
+            <div class="s3"></div>
         </div>
 
-        <!-- Contenu principal -->
-        <div class="inner-wrap">
+        <!-- ─────────────────────────────────────
+         ZONE DE CONTENU
+    ───────────────────────────────────── -->
+        <div class="body-wrap">
 
-            <!-- En-tête -->
+            <!-- EN-TÊTE -->
             <header class="header">
-                <div class="header-left">
-                    <img src="images/logo.png" alt="La Régale Logo">
-                    <div class="header-divider"></div>
-                    <span class="header-tagline">Établissement Gastronomique</span>
+
+                <div class="header-logo">
+                    <img src="images/logo.png" alt="Logo Restaurant La Régale">
                 </div>
-                <div class="header-right">
+
+                <div class="header-sep" role="separator"></div>
+
+                <div class="header-company">
                     <div class="company-name">Restaurant La Régale</div>
-                    <div class="company-info">
-                        <p>Djidjolé / Lomé, Togo</p>
-                        <p>+228 92 46 92 16</p>
-                        <p><strong>NIF :</strong> 1001534263</p>
-                        <p><strong>CNSS :</strong> 90621</p>
-                        <p><strong>BP :</strong> 30708</p>
-                        <p>laregale228@gmail.com</p>
+                    <div class="company-tagline">Établissement Gastronomique</div>
+                    <div class="company-coords">
+                        <span><span class="coord-label">Adresse :</span> Djidjolé / Lomé, Togo</span>
+                        <span><span class="coord-label">Tél :</span> +228 92 46 92 16</span>
+                        <span><span class="coord-label">NIF :</span> 1001534263</span>
+                        <span><span class="coord-label">CNSS :</span> 90621</span>
+                        <span><span class="coord-label">BP :</span> 30708</span>
+                        <span><span class="coord-label">Email :</span> laregale228@gmail.com</span>
                     </div>
-                    <div class="ref-badge">Réf. : ATT-2025/03 &nbsp;|&nbsp; Document officiel</div>
                 </div>
+
+                <div class="header-ref">
+                    <div class="ref-num">Réf. : ATT-2025/03-001</div>
+                    <div class="ref-date">Lomé, le 11 mars 2025</div>
+                    <div class="ref-official">Document Officiel</div>
+                </div>
+
             </header>
 
-            <!-- Titre du document -->
-            <section class="document-title">
-                <div class="title-inner">
-                    <div class="title-label">Document officiel</div>
-                    <h1>ATTESTATION DE TRAVAIL</h1>
-                    <div class="title-ornament">
-                        <div class="ornament-line"></div>
-                        <div class="ornament-diamond"></div>
-                        <div class="ornament-line right"></div>
-                    </div>
+            <!-- TITRE DU DOCUMENT -->
+            <section class="doc-title">
+                <span class="doc-title-eyebrow">République Togolaise &nbsp;—&nbsp; Document Administratif</span>
+                <h1>ATTESTATION DE TRAVAIL</h1>
+                <div class="title-ornament">
+                    <div class="orn-line-sm"></div>
+                    <div class="orn-line"></div>
+                    <div class="orn-dot"></div>
+                    <div class="orn-line r"></div>
+                    <div class="orn-line-sm r"></div>
                 </div>
             </section>
 
-            <!-- Corps du document -->
+            <!-- CORPS DU DOCUMENT -->
             <main class="content">
 
                 <p>
-                    Je soussignée, <strong>Mme BAITE Afi Justine</strong>, agissant en qualité de <strong>Directrice
-                        Générale</strong>
-                    de l'établissement gastronomique <strong>La Régale</strong>, certifie par la présente que :
+                    Je soussignée, <strong>Mme BAITE Afi Justine</strong>, agissant en qualité de
+                    <strong>Directrice Générale</strong> de l'établissement gastronomique
+                    <strong>La Régale</strong>, certifie par la présente que :
                 </p>
 
-                <div class="recipient-block">
-                    <span class="recipient-corner tl"></span>
-                    <span class="recipient-corner tr"></span>
-                    <strong class="recipient-name">M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
-                    <span class="recipient-corner bl"></span>
-                    <span class="recipient-corner br"></span>
+                <!-- Bloc Bénéficiaire -->
+                <div class="beneficiary">
+                    <div class="beneficiary-inner">
+                        <span class="beneficiary-label">Bénéficiaire de la présente attestation</span>
+                        <strong class="beneficiary-name">M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
+                    </div>
                 </div>
 
                 <p>
-                    A été employé au sein de notre établissement en qualité de <strong>Responsable
-                        Informatique</strong>.
-                    Il a exercé ses fonctions du <strong>1<sup>er</sup> août 2023</strong> au <strong>31 janvier
-                        2025</strong>.
+                    A été employé au sein de notre établissement en qualité de
+                    <strong>Responsable Informatique</strong>, et y a exercé ses fonctions du
+                    <strong>1<sup>er</sup> août 2023</strong> au <strong>31 janvier 2025</strong>.
                 </p>
 
                 <p>
-                    Au cours de cette période, l'intéressé a accompli ses missions avec un professionnalisme exemplaire
-                    et un sens aigu des responsabilités. Ses fonctions incluaient notamment :
+                    Au cours de cette période, l'intéressé a accompli ses missions avec un
+                    professionnalisme exemplaire et un sens aigu des responsabilités.
+                    Ses fonctions incluaient notamment :
                 </p>
 
-                <ul class="responsibilities-list">
-                    <li><strong>Création et maintenance</strong> du site web du restaurant</li>
-                    <li><strong>Maintenance curative et préventive</strong> du système informatique et des équipements
-                    </li>
-                    <li><strong>Digitalisation</strong> du système de gestion des employés, des commandes et de la
-                        clientèle</li>
-                </ul>
+                <div class="mission-block">
+                    <ul>
+                        <li>
+                            <strong>Création et maintenance</strong> du site web du restaurant
+                        </li>
+                        <li>
+                            <strong>Maintenance curative et préventive</strong> du système informatique
+                            et des équipements
+                        </li>
+                        <li>
+                            <strong>Digitalisation</strong> du système de gestion des employés,
+                            des commandes et de la clientèle
+                        </li>
+                    </ul>
+                </div>
 
                 <p>
-                    Durant toute la durée de notre collaboration, <strong>M. NOMEUMEU</strong> a fait preuve de rigueur,
-                    de ponctualité et d'un excellent esprit d'équipe, apportant une valeur ajoutée significative
-                    à notre structure.
+                    Durant toute la durée de notre collaboration, <strong>M. NOMEUMEU</strong>
+                    a fait preuve de rigueur, de ponctualité et d'un excellent esprit d'équipe,
+                    apportant une valeur ajoutée significative à notre structure.
                 </p>
 
+                <div class="closing-rule">
+                    <span>Attestation délivrée à la demande de l'intéressé</span>
+                </div>
+
                 <p>
-                    La présente attestation est délivrée à l'intéressé pour servir et valoir ce que de droit.
+                    La présente attestation est délivrée à l'intéressé pour servir et valoir
+                    ce que de droit.
                 </p>
 
             </main>
 
-            <!-- Pied de page / Signature -->
+            <!-- PIED DE PAGE — SIGNATURE -->
             <footer class="footer">
-                <div class="footer-left">
-                    <p class="legal-note">
-                        Document délivré en un exemplaire original.<br>
-                        Toute reproduction est soumise à autorisation.
-                    </p>
+
+                <div class="footer-legal">
+                    <strong>Document original — 1 exemplaire</strong><br>
+                    Toute reproduction ou falsification de ce document<br>
+                    est passible de poursuites judiciaires.<br>
+                    <br>
+                    <strong>Archivé sous :</strong> Registre RH — Dossier ATT-2025
                 </div>
-                <div class="signature-block">
-                    <p class="date-place">Fait à Lomé, le <strong>11 mars 2025</strong></p>
-                    <p class="signature-title">La Directrice Générale</p>
-                    <span class="signature-name">BAITE A. Justine</span>
-                    <div class="stamp-area">Cachet &amp; Signature</div>
+
+                <div class="signature-column">
+                    <div class="sig-date">Fait à <strong>Lomé</strong>, le <strong>11 mars 2025</strong></div>
+                    <div class="sig-title">La Directrice Générale</div>
+                    <span class="sig-name">BAITE A. Justine</span>
+                    <div class="stamp-zone">
+                        <div class="sz-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <div class="sz-label">Cachet &amp; Signature</div>
+                    </div>
                 </div>
+
             </footer>
 
-        </div><!-- /.inner-wrap -->
+        </div><!-- /.body-wrap -->
 
-        <!-- Bandes décoratives inférieures -->
-        <div class="bottom-band">
-            <div class="band-accent-b"></div>
-            <div class="band-secondary-b"></div>
-            <div class="band-primary-b"></div>
+        <!-- Bande chromatique inférieure -->
+        <div class="stripe-bottom">
+            <div class="s3"></div>
+            <div class="s2"></div>
+            <div class="s1"></div>
         </div>
 
-        <span class="page-number">Page 1 / 1</span>
+        <span class="page-num">Page 1 / 1</span>
 
-    </div>
+    </div><!-- /.page -->
 
 </body>
 

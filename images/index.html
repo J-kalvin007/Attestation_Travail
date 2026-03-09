@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation de Travail - La Régale</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
+
+        :root {
+            --rose-signature: #E59696;
+            --rose-light: #f5dcdc;
+            --rose-deep: #c97070;
+            --texte-sombre: #1A2535;
+            --texte-medium: #3a4a5c;
+            --texte-clair: #6b7a8d;
+            --ligne-fine: #dde3ec;
+            --background-soft: #fafbfd;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef0f4 0%, #e8eaef 100%);
+            margin: 0;
+            padding: 30px 0 40px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--texte-sombre);
+        }
+
+        /* ─── A4 Page ─── */
+        .a4-page {
+            background-color: #FFFFFF;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.04),
+                0 12px 40px rgba(0, 0, 0, 0.10),
+                0 1px 3px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        /* ─── Bande de couleur supérieure (triple) ─── */
+        .top-band {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .band-primary {
+            height: 7px;
+            background-color: var(--rose-signature);
+        }
+
+        .band-secondary {
+            height: 2px;
+            background-color: var(--rose-deep);
+        }
+
+        .band-accent {
+            height: 1px;
+            background-color: var(--rose-light);
+        }
+
+        /* ─── Bande de couleur inférieure (triple) ─── */
+        .bottom-band {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .band-accent-b {
+            height: 1px;
+            background-color: var(--rose-light);
+        }
+
+        .band-secondary-b {
+            height: 2px;
+            background-color: var(--rose-deep);
+        }
+
+        .band-primary-b {
+            height: 7px;
+            background-color: var(--rose-signature);
+        }
+
+        /* ─── Zone intérieure du document ─── */
+        .inner-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 14mm 22mm 12mm;
+        }
+
+        /* ─── Filigrane ─── */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            width: 55%;
+            opacity: 0.055;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* ─── Header ─── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            margin-bottom: 10px;
+            border-bottom: 1.5px solid var(--ligne-fine);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left img {
+            height: 82px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 64px;
+            background: linear-gradient(to bottom, transparent, var(--rose-signature), transparent);
+            margin: 0 18px;
+        }
+
+        .header-tagline {
+            font-size: 8pt;
+            color: var(--texte-clair);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-right .company-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 19pt;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            color: var(--texte-sombre);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .header-right .company-info {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 1px 14px;
+            justify-content: end;
+            margin-top: 4px;
+        }
+
+        .company-info p {
+            margin: 0;
+            font-size: 7.5pt;
+            color: var(--texte-clair);
+            line-height: 1.55;
+            text-align: right;
+        }
+
+        .company-info p strong {
+            color: var(--texte-medium);
+            font-weight: 600;
+        }
+
+        .ref-badge {
+            display: inline-block;
+            margin-top: 7px;
+            background: var(--background-soft);
+            border: 1px solid var(--ligne-fine);
+            border-left: 2.5px solid var(--rose-signature);
+            border-radius: 3px;
+            padding: 2px 8px;
+            font-size: 7pt;
+            color: var(--texte-clair);
+            letter-spacing: 0.8px;
+        }
+
+        /* ─── Titre du document ─── */
+        .document-title {
+            text-align: center;
+            margin: 20px 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title-inner {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-label {
+            font-size: 7pt;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--rose-deep);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .document-title h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28pt;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 5px;
+            color: var(--texte-sombre);
+            line-height: 1;
+        }
+
+        .title-ornament {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .ornament-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--rose-signature));
+        }
+
+        .ornament-line.right {
+            background: linear-gradient(to left, transparent, var(--rose-signature));
+        }
+
+        .ornament-diamond {
+            width: 6px;
+            height: 6px;
+            background-color: var(--rose-signature);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        /* ─── Contenu principal ─── */
+        .content {
+            flex-grow: 1;
+            font-size: 10.5pt;
+            line-height: 1.85;
+            text-align: justify;
+            color: var(--texte-medium);
+            position: relative;
+            z-index: 1;
+            hyphens: auto;
+        }
+
+        .content p {
+            margin: 0 0 12px 0;
+        }
+
+        /* ─── Encadré du nom du bénéficiaire ─── */
+        .recipient-block {
+            margin: 18px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .recipient-name {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20pt;
+            font-weight: 700;
+            color: var(--texte-sombre);
+            letter-spacing: 2px;
+            padding: 14px 30px;
+            border-top: 1.5px solid var(--ligne-fine);
+            border-bottom: 1.5px solid var(--ligne-fine);
+            position: relative;
+        }
+
+        .recipient-name::before,
+        .recipient-name::after {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid var(--rose-signature);
+        }
+
+        .recipient-name::before {
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            background: white;
+        }
+
+        .recipient-corner {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--rose-signature);
+            border-style: solid;
+        }
+
+        .recipient-corner.tl {
+            top: 0;
+            left: 0;
+            border-width: 2px 0 0 2px;
+        }
+
+        .recipient-corner.tr {
+            top: 0;
+            right: 0;
+            border-width: 2px 2px 0 0;
+        }
+
+        .recipient-corner.bl {
+            bottom: 0;
+            left: 0;
+            border-width: 0 0 2px 2px;
+        }
+
+        .recipient-corner.br {
+            bottom: 0;
+            right: 0;
+            border-width: 0 2px 2px 0;
+        }
+
+        /* ─── Liste des responsabilités ─── */
+        .responsibilities-list {
+            margin: 10px 0 16px 0;
+            list-style-type: none;
+            padding: 0;
+            background: var(--background-soft);
+            border-left: 3px solid var(--rose-signature);
+            border-radius: 0 6px 6px 0;
+            padding: 10px 16px 10px 20px;
+        }
+
+        .responsibilities-list li {
+            position: relative;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            font-size: 10pt;
+            color: var(--texte-medium);
+            line-height: 1.6;
+        }
+
+        .responsibilities-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .responsibilities-list li::before {
+            content: "▸";
+            color: var(--rose-signature);
+            font-size: 10pt;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .responsibilities-list li strong {
+            color: var(--texte-sombre);
+            font-weight: 600;
+        }
+
+        /* ─── Footer / Signature ─── */
+        .footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 16px;
+            border-top: 1.5px solid var(--ligne-fine);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-left {
+            font-size: 8pt;
+            color: var(--texte-clair);
+            line-height: 1.7;
+        }
+
+        .footer-left .legal-note {
+            font-style: italic;
+            max-width: 200px;
+        }
+
+        .signature-block {
+            width: 260px;
+            text-align: center;
+        }
+
+        .date-place {
+            font-size: 9pt;
+            color: var(--texte-clair);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .date-place strong {
+            color: var(--texte-medium);
+        }
+
+        .signature-title {
+            font-weight: 600;
+            font-size: 9pt;
+            margin: 0 0 2px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--texte-sombre);
+        }
+
+        .signature-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 13pt;
+            font-weight: 600;
+            color: var(--texte-sombre);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .stamp-area {
+            margin-top: 14px;
+            height: 90px;
+            border: 1.5px dashed var(--ligne-fine);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6.5pt;
+            color: #bcc5d0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* ─── Numérotation de page ─── */
+        .page-number {
+            position: absolute;
+            bottom: 5mm;
+            right: 22mm;
+            font-size: 7pt;
+            color: #c0c8d4;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+
+        /* ─── Print ─── */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .a4-page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="a4-page">
+
+        <!-- Watermark -->
+        <img src="images/logo_laregale.jpeg" alt="Filigrane La Régale" class="watermark">
+
+        <!-- Bandes décoratives supérieures -->
+        <div class="top-band">
+            <div class="band-primary"></div>
+            <div class="band-secondary"></div>
+            <div class="band-accent"></div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="inner-wrap">
+
+            <!-- En-tête -->
+            <header class="header">
+                <div class="header-left">
+                    <img src="images/logo.png" alt="La Régale Logo">
+                    <div class="header-divider"></div>
+                    <span class="header-tagline">Établissement Gastronomique</span>
+                </div>
+                <div class="header-right">
+                    <div class="company-name">Restaurant La Régale</div>
+                    <div class="company-info">
+                        <p>Djidjolé / Lomé, Togo</p>
+                        <p>+228 92 46 92 16</p>
+                        <p><strong>NIF :</strong> 1001534263</p>
+                        <p><strong>CNSS :</strong> 90621</p>
+                        <p><strong>BP :</strong> 30708</p>
+                        <p>laregale228@gmail.com</p>
+                    </div>
+                    <div class="ref-badge">Réf. : ATT-2025/03 &nbsp;|&nbsp; Document officiel</div>
+                </div>
+            </header>
+
+            <!-- Titre du document -->
+            <section class="document-title">
+                <div class="title-inner">
+                    <div class="title-label">Document officiel</div>
+                    <h1>ATTESTATION DE TRAVAIL</h1>
+                    <div class="title-ornament">
+                        <div class="ornament-line"></div>
+                        <div class="ornament-diamond"></div>
+                        <div class="ornament-line right"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Corps du document -->
+            <main class="content">
+
+                <p>
+                    Je soussignée, <strong>Mme BAITE Afi Justine</strong>, agissant en qualité de <strong>Directrice
+                        Générale</strong>
+                    de l'établissement gastronomique <strong>La Régale</strong>, certifie par la présente que :
+                </p>
+
+                <div class="recipient-block">
+                    <span class="recipient-corner tl"></span>
+                    <span class="recipient-corner tr"></span>
+                    <strong class="recipient-name">M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
+                    <span class="recipient-corner bl"></span>
+                    <span class="recipient-corner br"></span>
+                </div>
+
+                <p>
+                    A été employé au sein de notre établissement en qualité de <strong>Responsable
+                        Informatique</strong>.
+                    Il a exercé ses fonctions du <strong>1<sup>er</sup> août 2023</strong> au <strong>31 janvier
+                        2025</strong>.
+                </p>
+
+                <p>
+                    Au cours de cette période, l'intéressé a accompli ses missions avec un professionnalisme exemplaire
+                    et un sens aigu des responsabilités. Ses fonctions incluaient notamment :
+                </p>
+
+                <ul class="responsibilities-list">
+                    <li><strong>Création et maintenance</strong> du site web du restaurant</li>
+                    <li><strong>Maintenance curative et préventive</strong> du système informatique et des équipements
+                    </li>
+                    <li><strong>Digitalisation</strong> du système de gestion des employés, des commandes et de la
+                        clientèle</li>
+                </ul>
+
+                <p>
+                    Durant toute la durée de notre collaboration, <strong>M. NOMEUMEU</strong> a fait preuve de rigueur,
+                    de ponctualité et d'un excellent esprit d'équipe, apportant une valeur ajoutée significative
+                    à notre structure.
+                </p>
+
+                <p>
+                    La présente attestation est délivrée à l'intéressé pour servir et valoir ce que de droit.
+                </p>
+
+            </main>
+
+            <!-- Pied de page / Signature -->
+            <footer class="footer">
+                <div class="footer-left">
+                    <p class="legal-note">
+                        Document délivré en un exemplaire original.<br>
+                        Toute reproduction est soumise à autorisation.
+                    </p>
+                </div>
+                <div class="signature-block">
+                    <p class="date-place">Fait à Lomé, le <strong>11 mars 2025</strong></p>
+                    <p class="signature-title">La Directrice Générale</p>
+                    <span class="signature-name">BAITE A. Justine</span>
+                    <div class="stamp-area">Cachet &amp; Signature</div>
+                </div>
+            </footer>
+
+        </div><!-- /.inner-wrap -->
+
+        <!-- Bandes décoratives inférieures -->
+        <div class="bottom-band">
+            <div class="band-accent-b"></div>
+            <div class="band-secondary-b"></div>
+            <div class="band-primary-b"></div>
+        </div>
+
+        <span class="page-number">Page 1 / 1</span>
+
+    </div>
+
+</body>
+
+</html>
