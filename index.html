@@ -6,11 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attestation de Travail — La Régale</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-        /* ════════════════════════════════════════
-           DESIGN TOKENS
-        ════════════════════════════════════════ */
         :root {
             --rose: #E59696;
             --rose-deep: #C97070;
@@ -29,35 +26,36 @@
             box-sizing: border-box;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             background: #E4E8F0;
-            margin: 0;
-            padding: 36px 0 48px;
+            padding: 28px 0 40px;
             font-family: 'Montserrat', sans-serif;
             color: var(--ink);
         }
 
-        /* ════════════════════════════════════════
-           PAGE A4
-        ════════════════════════════════════════ */
+        /* ══════════════════════════════════════
+           PAGE A4 — taille fixe, débordement caché
+        ══════════════════════════════════════ */
         .page {
             background: var(--white);
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm;
             margin: 0 auto;
             position: relative;
             display: flex;
             flex-direction: column;
-            box-shadow:
-                0 2px 4px rgba(0, 0, 0, 0.06),
-                0 8px 24px rgba(0, 0, 0, 0.10),
-                0 20px 56px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.07),
+                0 8px 28px rgba(0, 0, 0, 0.13),
+                0 20px 60px rgba(0, 0, 0, 0.09);
         }
 
-        /* ── Barre latérale gauche ── */
+        /* ── Barre latérale gauche — collée au bord gauche absolu ── */
         .page::before {
             content: "";
             position: absolute;
@@ -69,76 +67,121 @@
                     var(--rose) 0%,
                     var(--rose-deep) 50%,
                     var(--rose) 100%);
-            z-index: 5;
+            z-index: 10;
         }
 
-        /* ════════════════════════════════════════
-           BANDEAUX CHROMATIQUES
-        ════════════════════════════════════════ */
-        .stripe-top,
-        .stripe-bottom {
+        /* ── Barre latérale droite — collée au bord droit absolu ── */
+        .page::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(to bottom,
+                    var(--rose) 0%,
+                    var(--rose-deep) 50%,
+                    var(--rose) 100%);
+            z-index: 10;
+        }
+
+        /* ══════════════════════════════════════
+           BANDEAUX CHROMATIQUES — collés aux bords absolus
+        ══════════════════════════════════════ */
+        .stripe-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
             display: flex;
             flex-direction: column;
-            flex-shrink: 0;
-            width: 100%;
+            z-index: 9;
         }
 
+        .stripe-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+        }
+
+
         .s1 {
-            height: 5px;
+            height: 6px;
             background: var(--rose);
         }
 
         .s2 {
-            height: 1.5px;
+            height: 0px;
             background: var(--rose-deep);
         }
 
         .s3 {
-            height: 0.8px;
+            height: 0px;
             background: var(--rose-muted);
         }
 
-        /* ════════════════════════════════════════
+        .s4 {
+            height: 0px;
+            background: var(--rose-muted);
+        }
+
+        /* Espace pour ne pas écrire sous les bandes */
+        .stripe-top-spacer {
+            height: 8px;
+            flex-shrink: 0;
+        }
+
+        .stripe-bottom-spacer {
+            height: 8px;
+            flex-shrink: 0;
+        }
+
+        /* ══════════════════════════════════════
            FILIGRANE
-        ════════════════════════════════════════ */
+        ══════════════════════════════════════ */
         .watermark {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-10deg);
-            width: 52%;
-            opacity: 0.05;
+            width: 62%;
+            opacity: 0.1;
             z-index: 0;
             pointer-events: none;
         }
 
-        /* ════════════════════════════════════════
-           ZONE INTÉRIEURE (contenu)
-        ════════════════════════════════════════ */
+        /* ══════════════════════════════════════
+           ZONE DE CONTENU
+           Padding horizontal généreux, vertical ajusté
+           pour laisser la bande et le bas respirer
+        ══════════════════════════════════════ */
         .body-wrap {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 12mm 24mm 10mm 26mm;
-            /* +1mm gauche pour compenser la barre */
+            /* gauche +6mm pour respecter la barre latérale */
+            padding: 12mm 22mm 12mm 25mm;
             position: relative;
             z-index: 1;
         }
 
-        /* ════════════════════════════════════════
-           EN-TÊTE INSTITUTIONNEL
-        ════════════════════════════════════════ */
+        /* ══════════════════════════════════════
+           EN-TÊTE
+        ══════════════════════════════════════ */
         .header {
             display: grid;
-            grid-template-columns: auto 1fr auto;
+            grid-template-columns: auto auto 1fr auto;
             align-items: center;
-            gap: 0 22px;
-            padding-bottom: 14px;
-            margin-bottom: 18px;
-            border-bottom: 1px solid var(--divider);
+            gap: 0 20px;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+            /* border-bottom: 1px solid var(--divider); */
         }
 
-        /* Logo */
         .header-logo img {
             height: 76px;
             width: auto;
@@ -146,66 +189,60 @@
             object-fit: contain;
         }
 
-        /* Séparateur vertical */
         .header-sep {
             width: 1px;
-            align-self: stretch;
-            margin: 4px 0;
-            background: linear-gradient(to bottom,
-                    transparent 0%,
-                    var(--rose) 30%,
-                    var(--rose) 70%,
-                    transparent 100%);
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--rose), transparent);
+            flex-shrink: 0;
         }
 
-        /* Infos entreprise */
         .header-company {
             display: flex;
             flex-direction: column;
-            gap: 0;
+            gap: 2px;
         }
 
         .company-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 18.5pt;
+            font-size: 17.5pt;
             font-weight: 700;
             color: var(--ink);
             letter-spacing: 2px;
             text-transform: uppercase;
-            line-height: 1.05;
-            margin: 0 0 4px;
+            line-height: 1;
         }
 
         .company-tagline {
             font-size: 7pt;
             font-weight: 500;
-            letter-spacing: 3px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             color: var(--rose-deep);
-            margin: 0 0 8px;
+            margin-bottom: 6px;
         }
 
         .company-coords {
             display: flex;
             flex-wrap: wrap;
-            column-gap: 14px;
-            row-gap: 1px;
+            column-gap: 12px;
         }
 
         .company-coords span {
-            font-size: 7.2pt;
-            color: var(--ink-light);
+            font-size: 7.5pt;
+            /* color: var(--ink-light); */
+            color: black;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
+            line-height: 1.6;
         }
 
-        .company-coords .coord-label {
+        .coord-label {
             font-weight: 600;
-            color: var(--ink-medium);
+            /* color: var(--ink-medium); */
+            color: black;
         }
 
-        /* Bloc référence document */
         .header-ref {
             text-align: right;
             display: flex;
@@ -215,76 +252,72 @@
         }
 
         .ref-num {
-            font-size: 7pt;
+            font-size: 7.5pt;
             font-weight: 600;
             color: var(--ink-medium);
-            letter-spacing: 0.8px;
             background: var(--surface-alt);
             border: 1px solid var(--divider);
-            border-left: 2.5px solid var(--rose);
+            border-left: 3px solid var(--rose);
             border-radius: 2px;
-            padding: 3px 9px;
+            padding: 2.5px 9px;
             white-space: nowrap;
         }
 
         .ref-date {
-            font-size: 6.8pt;
+            font-size: 7pt;
             color: var(--ink-ghost);
-            letter-spacing: 0.4px;
         }
 
         .ref-official {
-            font-size: 5.8pt;
+            font-size: 6.5pt;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             color: var(--rose-deep);
             border: 1px solid var(--rose-muted);
             background: var(--rose-pale);
-            padding: 2px 7px;
+            padding: 2.5px 7px;
             border-radius: 2px;
         }
 
-        /* ════════════════════════════════════════
-           TITRE DU DOCUMENT
-        ════════════════════════════════════════ */
+        /* ══════════════════════════════════════
+           TITRE
+        ══════════════════════════════════════ */
         .doc-title {
             text-align: center;
-            margin: 18px 0 22px;
+            margin: 12px 0 14px;
         }
 
         .doc-title-eyebrow {
             display: block;
             font-size: 6.5pt;
-            font-weight: 600;
-            letter-spacing: 5px;
+            font-weight: 500;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--ink-ghost);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .doc-title h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 27pt;
+            font-size: 26pt;
             font-weight: 700;
             letter-spacing: 6px;
             color: var(--ink);
-            margin: 0;
             line-height: 1;
+
         }
 
-        /* Ornement sous le titre */
         .title-ornament {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0;
-            margin-top: 11px;
+            margin-top: 9px;
         }
 
         .orn-line {
             height: 1px;
-            width: 60px;
+            width: 62px;
             background: linear-gradient(to right, transparent, var(--rose));
         }
 
@@ -292,39 +325,41 @@
             background: linear-gradient(to left, transparent, var(--rose));
         }
 
-        .orn-dot {
-            width: 5px;
-            height: 5px;
-            background: var(--rose);
-            transform: rotate(45deg);
-            margin: 0 8px;
-            flex-shrink: 0;
-        }
-
         .orn-line-sm {
             height: 0.6px;
-            width: 28px;
+            width: 26px;
             background: var(--rose-muted);
         }
 
-        .orn-line-sm.r {
-            /* mirror */
+        .orn-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--rose);
+            transform: rotate(45deg);
+            margin: 0px 8px;
+            flex-shrink: 0;
         }
 
-        /* ════════════════════════════════════════
-           CORPS DU DOCUMENT
-        ════════════════════════════════════════ */
+        /* ══════════════════════════════════════
+           CORPS — taille augmentée, espacement généreux
+        ══════════════════════════════════════ */
         .content {
             flex-grow: 1;
-            font-size: 10.2pt;
-            line-height: 1.9;
+            /* remplit tout l'espace disponible */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            /* distribue l'espace vertical */
+            font-size: 11.2pt;
+            line-height: 1.85;
             text-align: justify;
             color: var(--ink-medium);
             hyphens: auto;
+            margin-top: 20px;
         }
 
         .content p {
-            margin: 0 0 13px;
+            margin: 0;
         }
 
         .content strong {
@@ -332,63 +367,56 @@
             font-weight: 600;
         }
 
-        /* ── Bloc du bénéficiaire ── */
+        /* Bloc bénéficiaire */
         .beneficiary {
-            margin: 16px 0 18px;
-            padding: 13px 0;
+            margin: 20px 0px;
+            padding: 18px 18px;
             border-top: 1px solid var(--divider);
             border-bottom: 1px solid var(--divider);
             text-align: center;
             position: relative;
         }
 
-        /* Coins décoratifs */
-        .beneficiary::before,
-        .beneficiary::after {
+        .beneficiary::before {
             content: "";
             position: absolute;
-            width: 14px;
-            height: 14px;
-            border-color: var(--rose);
-            border-style: solid;
-        }
-
-        .beneficiary::before {
             top: -1px;
             left: -1px;
-            border-width: 2px 0 0 2px;
+            width: 14px;
+            height: 14px;
+            border-top: 2px solid var(--rose);
+            border-left: 2px solid var(--rose);
         }
 
         .beneficiary::after {
-            bottom: -1px;
-            right: -1px;
-            border-width: 0 2px 2px 0;
-        }
-
-        .beneficiary-inner {
-            position: relative;
-        }
-
-        .beneficiary-inner::before,
-        .beneficiary-inner::after {
             content: "";
             position: absolute;
+            bottom: -1px;
+            right: -1px;
             width: 14px;
             height: 14px;
-            border-color: var(--rose);
-            border-style: solid;
+            border-bottom: 2px solid var(--rose);
+            border-right: 2px solid var(--rose);
         }
 
-        .beneficiary-inner::before {
-            top: -14px;
+        .c-tr {
+            position: absolute;
+            top: -1px;
             right: -1px;
-            border-width: 2px 2px 0 0;
+            width: 14px;
+            height: 14px;
+            border-top: 2px solid var(--rose);
+            border-right: 2px solid var(--rose);
         }
 
-        .beneficiary-inner::after {
-            bottom: -14px;
+        .c-bl {
+            position: absolute;
+            bottom: -1px;
             left: -1px;
-            border-width: 0 0 2px 2px;
+            width: 14px;
+            height: 14px;
+            border-bottom: 2px solid var(--rose);
+            border-left: 2px solid var(--rose);
         }
 
         .beneficiary-label {
@@ -403,33 +431,31 @@
 
         .beneficiary-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 19pt;
+            font-size: 20pt;
             font-weight: 700;
             color: var(--ink);
             letter-spacing: 2px;
             display: block;
-            line-height: 1.15;
+            line-height: 1.1;
         }
 
-        /* ── Liste des fonctions ── */
+        /* Liste des missions */
         .mission-block {
-            background: var(--surface-alt);
+            /* background: var(--surface-alt); */
             border-left: 3px solid var(--rose);
             border-radius: 0 4px 4px 0;
-            padding: 10px 18px 10px 16px;
-            margin: 10px 0 16px;
+            padding: 0px 18px 0px 15px;
+            margin: 0px 0px 10px 0px;
         }
 
         .mission-block ul {
             list-style: none;
-            margin: 0;
-            padding: 0;
         }
 
         .mission-block li {
             position: relative;
-            padding: 4px 0 4px 20px;
-            font-size: 10pt;
+            padding: 0px 0 5px 20px;
+            font-size: 10.8pt;
             color: var(--ink-medium);
             line-height: 1.6;
             border-bottom: 0.5px solid var(--divider);
@@ -443,12 +469,12 @@
         .mission-block li::before {
             content: "›";
             position: absolute;
-            left: 4px;
-            top: 4px;
+            left: 3px;
+            top: 3px;
             color: var(--rose);
-            font-size: 14pt;
-            line-height: 1;
+            font-size: 15pt;
             font-weight: 700;
+            line-height: 1;
         }
 
         .mission-block li strong {
@@ -456,14 +482,11 @@
             font-weight: 600;
         }
 
-        /* ════════════════════════════════════════
-           SÉPARATEUR DE SECTION "POUR VALOIR CE QUE DE DROIT"
-        ════════════════════════════════════════ */
+        /* Règle de clôture */
         .closing-rule {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin: 6px 0 14px;
+            gap: 10px;
         }
 
         .closing-rule::before,
@@ -475,33 +498,31 @@
         }
 
         .closing-rule span {
-            font-size: 6pt;
-            letter-spacing: 3px;
+            font-size: 6.2pt;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             color: var(--ink-ghost);
             white-space: nowrap;
         }
 
-        /* ════════════════════════════════════════
-           PIED DE PAGE — SIGNATURE
-        ════════════════════════════════════════ */
+        /* ══════════════════════════════════════
+           FOOTER — SIGNATURE
+        ══════════════════════════════════════ */
         .footer {
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid var(--divider);
+            padding-top: 12px;
+            /* border-top: 1px solid var(--divider); */
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 0 30px;
+            gap: 0 28px;
             align-items: end;
+            flex-shrink: 0;
         }
 
-        /* Mentions légales bas gauche */
         .footer-legal {
-            font-size: 7pt;
+            font-size: 7.5pt;
             color: var(--ink-ghost);
             line-height: 1.7;
             font-style: italic;
-            align-self: end;
             padding-bottom: 2px;
         }
 
@@ -510,30 +531,30 @@
             color: var(--ink-light);
         }
 
-        /* Bloc signature droite */
         .signature-column {
-            width: 240px;
+            width: 230px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0;
         }
 
         .sig-date {
-            font-size: 8.5pt;
-            color: var(--ink-light);
-            margin-bottom: 10px;
+            font-size: 9pt;
+            /* color: var(--ink-light); */
+            margin-bottom: 17px;
             text-align: center;
+            color: black;
         }
 
         .sig-date strong {
-            color: var(--ink-medium);
+            /* color: var(--ink-medium); */
+            color: black;
         }
 
         .sig-title {
-            font-size: 8pt;
+            font-size: 8.5pt;
             font-weight: 700;
-            letter-spacing: 1.2px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--ink);
             text-align: center;
@@ -545,34 +566,34 @@
 
         .sig-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 12.5pt;
+            font-size: 13pt;
             font-weight: 600;
-            color: var(--ink);
             font-style: italic;
+            color: var(--ink);
             display: block;
             text-align: center;
             margin-bottom: 10px;
         }
 
-        /* Zone cachet */
         .stamp-zone {
             width: 100%;
-            height: 92px;
+            height: 82px;
             border: 1.5px dashed var(--divider);
             border-radius: 4px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
             background: var(--surface-alt);
+            visibility: hidden;
         }
 
         .stamp-zone .sz-icon {
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            border: 1.5px solid var(--divider);
+            border: 1px solid var(--divider);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -587,28 +608,26 @@
         }
 
         .stamp-zone .sz-label {
-            font-size: 6pt;
+            font-size: 6.5pt;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--ink-ghost);
         }
 
-        /* ════════════════════════════════════════
-           NUMÉRO DE PAGE
-        ════════════════════════════════════════ */
+        /* Numéro de page */
         .page-num {
             position: absolute;
-            bottom: 6mm;
-            right: 24mm;
+            bottom: 14px;
+            right: 22mm;
             font-size: 6.5pt;
             color: var(--ink-ghost);
             letter-spacing: 1px;
-            z-index: 5;
+            z-index: 8;
         }
 
-        /* ════════════════════════════════════════
+        /* ══════════════════════════════════════
            IMPRESSION
-        ════════════════════════════════════════ */
+        ══════════════════════════════════════ */
         @media print {
             body {
                 background: none;
@@ -616,10 +635,10 @@
             }
 
             .page {
-                width: 100%;
-                min-height: 100vh;
-                box-shadow: none;
+                width: 210mm;
+                height: 297mm;
                 margin: 0;
+                box-shadow: none;
             }
         }
     </style>
@@ -629,30 +648,36 @@
 
     <div class="page">
 
-        <!-- Filigrane -->
         <img src="images/logo_laregale.jpeg" alt="" class="watermark" aria-hidden="true">
 
-        <!-- Bande chromatique supérieure -->
+        <!-- Bande supérieure — position absolute, collée au bord -->
         <div class="stripe-top">
             <div class="s1"></div>
             <div class="s2"></div>
             <div class="s3"></div>
+            <div class="s4"></div>
         </div>
 
-        <!-- ─────────────────────────────────────
-         ZONE DE CONTENU
-    ───────────────────────────────────── -->
+        <!-- Bande inférieure — position absolute, collée au bord -->
+        <div class="stripe-bottom">
+            <div class="s4"></div>
+            <div class="s3"></div>
+            <div class="s2"></div>
+            <div class="s1"></div>
+        </div>
+
+        <!-- CONTENU PRINCIPAL -->
         <div class="body-wrap">
+
+            <!-- Espace réservé pour les bandes supérieures -->
+            <div class="stripe-top-spacer"></div>
 
             <!-- EN-TÊTE -->
             <header class="header">
-
                 <div class="header-logo">
                     <img src="images/logo.png" alt="Logo Restaurant La Régale">
                 </div>
-
                 <div class="header-sep" role="separator"></div>
-
                 <div class="header-company">
                     <div class="company-name">Restaurant La Régale</div>
                     <div class="company-tagline">Établissement Gastronomique</div>
@@ -665,29 +690,27 @@
                         <span><span class="coord-label">Email :</span> laregale228@gmail.com</span>
                     </div>
                 </div>
-
-                <div class="header-ref">
+                <!-- <div class="header-ref">
                     <div class="ref-num">Réf. : ATT-2025/03-001</div>
                     <div class="ref-date">Lomé, le 11 mars 2025</div>
                     <div class="ref-official">Document Officiel</div>
-                </div>
-
+                </div> -->
             </header>
 
-            <!-- TITRE DU DOCUMENT -->
+            <!-- TITRE -->
             <section class="doc-title">
-                <span class="doc-title-eyebrow">République Togolaise &nbsp;—&nbsp; Document Administratif</span>
+                <!-- <span class="doc-title-eyebrow">République Togolaise &nbsp;—&nbsp; Document Administratif</span> -->
                 <h1>ATTESTATION DE TRAVAIL</h1>
                 <div class="title-ornament">
                     <div class="orn-line-sm"></div>
                     <div class="orn-line"></div>
                     <div class="orn-dot"></div>
                     <div class="orn-line r"></div>
-                    <div class="orn-line-sm r"></div>
+                    <div class="orn-line-sm"></div>
                 </div>
             </section>
 
-            <!-- CORPS DU DOCUMENT -->
+            <!-- CORPS -->
             <main class="content">
 
                 <p>
@@ -696,18 +719,17 @@
                     <strong>La Régale</strong>, certifie par la présente que :
                 </p>
 
-                <!-- Bloc Bénéficiaire -->
                 <div class="beneficiary">
-                    <div class="beneficiary-inner">
-                        <span class="beneficiary-label">Bénéficiaire de la présente attestation</span>
-                        <strong class="beneficiary-name">M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
-                    </div>
+                    <span class="c-tr"></span>
+                    <span class="c-bl"></span>
+                    <!-- <span class="beneficiary-label">Bénéficiaire de la présente attestation</span> -->
+                    <strong class="beneficiary-name">M. NOMEUMEU TAKOUDJOU Moise Calvin</strong>
                 </div>
 
                 <p>
                     A été employé au sein de notre établissement en qualité de
-                    <strong>Responsable Informatique</strong>, et y a exercé ses fonctions du
-                    <strong>1<sup>er</sup> août 2023</strong> au <strong>31 janvier 2025</strong>.
+                    <strong>Responsable <br> Informatique</strong>, et y a exercé ses fonctions du
+                    <strong>1<sup>er</sup> novembre 2023</strong> au <strong>31 janvier 2025</strong>.
                 </p>
 
                 <p>
@@ -719,15 +741,29 @@
                 <div class="mission-block">
                     <ul>
                         <li>
-                            <strong>Création et maintenance</strong> du site web du restaurant
+                            <strong>Conception et mise en place de solutions technologiques</strong> destinées à
+                            améliorer
+                            la gestion des commandes, des stocks et des flux opérationnels et employés du restaurant.
                         </li>
                         <li>
-                            <strong>Maintenance curative et préventive</strong> du système informatique
-                            et des équipements
+                            <strong>Support technique</strong> et assistance aux membres du personnel pour l’utilisation
+                            des outils informatiques et des logiciels de gestion.
                         </li>
                         <li>
-                            <strong>Digitalisation</strong> du système de gestion des employés,
-                            des commandes et de la clientèle
+                            <strong>Installation, configuration et maintenance</strong> de l’ensemble des équipements
+                            informatiques.
+                        </li>
+                        <!-- <li>
+                            <strong>Gestion du réseau informatique</strong> et des équipements connectés.
+                        </li> -->
+                        <!-- <li>
+                            <strong>Recherche, analyse et intégration de technologies digitales</strong> visant à
+                            améliorer
+                            l’expérience client et l’efficacité des processus internes.
+                        </li> -->
+                        <li>
+                            <strong>Organisation, sauvegarde et protection des données</strong> liées aux ventes, aux
+                            clients et aux opérations internes.
                         </li>
                     </ul>
                 </div>
@@ -738,9 +774,9 @@
                     apportant une valeur ajoutée significative à notre structure.
                 </p>
 
-                <div class="closing-rule">
+                <!-- <div class="closing-rule">
                     <span>Attestation délivrée à la demande de l'intéressé</span>
-                </div>
+                </div> -->
 
                 <p>
                     La présente attestation est délivrée à l'intéressé pour servir et valoir
@@ -749,46 +785,38 @@
 
             </main>
 
-            <!-- PIED DE PAGE — SIGNATURE -->
+            <!-- FOOTER -->
             <footer class="footer">
-
                 <div class="footer-legal">
-                    <strong>Document original — 1 exemplaire</strong><br>
+                    <!-- <strong>Document original — 1 exemplaire</strong><br>
                     Toute reproduction ou falsification de ce document<br>
                     est passible de poursuites judiciaires.<br>
-                    <br>
-                    <strong>Archivé sous :</strong> Registre RH — Dossier ATT-2025
+                    <br> -->
+                    <!-- <strong>Archivé sous :</strong> Registre RH — Dossier ATT-2025 -->
                 </div>
-
                 <div class="signature-column">
-                    <div class="sig-date">Fait à <strong>Lomé</strong>, le <strong>11 mars 2025</strong></div>
+                    <div class="sig-date">Fait à <strong>Lomé</strong>, le <strong>07 février 2025</strong></div>
                     <div class="sig-title">La Directrice Générale</div>
                     <span class="sig-name">BAITE A. Justine</span>
                     <div class="stamp-zone">
                         <div class="sz-icon">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="9" />
                             </svg>
                         </div>
                         <div class="sz-label">Cachet &amp; Signature</div>
                     </div>
                 </div>
-
             </footer>
+
+            <!-- Espace réservé pour les bandes inférieures -->
+            <div class="stripe-bottom-spacer"></div>
 
         </div><!-- /.body-wrap -->
 
-        <!-- Bande chromatique inférieure -->
-        <div class="stripe-bottom">
-            <div class="s3"></div>
-            <div class="s2"></div>
-            <div class="s1"></div>
-        </div>
+        <!-- <span class="page-num">Page 1 / 1</span> -->
 
-        <span class="page-num">Page 1 / 1</span>
-
-    </div><!-- /.page -->
+    </div>
 
 </body>
 
