@@ -248,6 +248,3 @@ Mettez à jour la liste à puces dans l'élément `<div class="mission-block">` 
 
 ---
 
-<div align="center">
-  <sub>Document rédigé avec précision technique et esthétique pour le Restaurant La Régale. Tous droits réservés.</sub>
-</div>
